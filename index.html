@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>9Pay - Real Wallet</title>
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,sans-serif}
+body{background:#f5f7fb;display:flex;justify-content:center;min-height:100vh}
+.app{width:100%;max-width:400px;background:white;min-height:100vh;position:relative;overflow:hidden;box-shadow:0 0 20px rgba(0,0,0,0.05)}
+.page{display:none;padding:24px;min-height:100vh}.page.active{display:block}
+.logo{text-align:center;margin:30px 0 15px}.logo h1{color:#1a56ff;font-size:32px;font-weight:900}
+.logo p{color:#666;font-size:14px;margin-top:4px}
+.input-group{margin:14px 0}.input-group label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:#333}
+.input-group input{width:100%;padding:14px 16px;border:1.5px solid #e5e7eb;border-radius:12px;font-size:16px;outline:none}
+.input-group input:focus{border-color:#1a56ff}
+.btn{width:100%;padding:14px;background:#1a56ff;color:white;border:none;border-radius:12px;font-size:16px;font-weight:700;margin-top:12px;cursor:pointer}
+.btn:active{transform:scale(0.98)}
+.btn-outline{background:white;color:#1a56ff;border:1.5px solid #1a56ff;margin-top:10px}
+.link{text-align:center;margin-top:16px;font-size:14px;color:#666}.link span{color:#1a56ff;font-weight:700;cursor:pointer}
+.header{background:#1a56ff;color:white;padding:20px 24px 30px;border-radius:0 0 24px 24px}
+.balance{font-size:14px;opacity:0.9}.amount{font-size:32px;font-weight:800;margin:8px 0}
+.actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;padding:20px 24px}
+.action-card{background:#f8f9ff;border-radius:16px;padding:16px;text-align:center;cursor:pointer}
+.action-card p{font-size:12px;font-weight:600}
+.list{padding:0 24px}.list-item{display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid #f0f0f0}
+.success{color:#00c851;font-weight:700}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div id="loginPage" class="page active">
+<div class="logo"><h1>9Pay</h1><p>Fast & Secure Payments</p></div>
+<div class="input-group"><label>Phone Number</label><input id="loginPhone" type="tel" placeholder="0810 000 0000"></div>
+<div class="input-group"><label>4-Digit PIN</label><input id="loginPin" type="password" placeholder="••••" maxlength="4"></div>
+<button class="btn" onclick="login()">Login</button>
+<button class="btn btn-outline" onclick="showPage('registerPage')">Create New Account</button>
+</div>
+
+<div id="registerPage" class="page">
+<div class="logo"><h1>Create Account</h1><p>Join 9Pay today</p></div>
+<div class="input-group"><label>Full Name</label><input id="regName" type="text" placeholder="John Doe"></div>
+<div class="input-group"><label>Email (for payment receipt)</label><input id="regEmail" type="email" placeholder="john@gmail.com"></div>
+<div class="input-group"><label>Phone Number</label><input id="regPhone" type="tel" placeholder="0810 000 0000"></div>
+<div class="input-group"><label>Create 4-Digit PIN</label><input id="regPin" type="password" placeholder="••••" maxlength="4"></div>
+<button class="btn" onclick="register()">Create Account</button>
+<div class="link"><span onclick="showPage('loginPage')">Back to Login</span></div>
+</div>
+
+<div id="homePage" class="page">
+<div class="header">
+<p class="balance">Wallet Balance • <span id="userName">User</span></p>
+<p class="amount">₦<span id="walletAmount">0.00</span></p>
+<p style="font-size:12px;opacity:0.8" id="userPhone"></p>
+</div>
+<div class="actions">
+<div class="action-card" onclick="showPage('fundPage')"><div>💳</div><p>Fund Wallet<br><small style="color:green">Real Money</small></p></div>
+<div class="action-card" onclick="showPage('transferPage')"><div>↗️</div><p>Transfer</p></div>
+<div class="action-card" onclick="showPage('airtimePage')"><div>📱</div><p>Airtime</p></div>
+</div>
+<div class="list">
+<div class="list-item"><span>Transactions</span><span class="success" id="txCount">0</span></div>
+<div id="txList"><div style="text-align:center;padding:40px;color:#999;font-size:13px">Fund wallet with real money to start.</div></div>
+</div>
+<button class="btn btn-outline" style="margin:20px 24px;width:calc(100% - 48px)" onclick="logout()">Logout</button>
+</div>
+
+<div id="fundPage" class="page">
+<h3 style="margin-bottom:20px">Fund Wallet - Real Money</h3>
+<div class="input-group"><label>Amount (₦)</label><input id="fundAmount" type="number" placeholder="1000"></div>
+<div class="input-group"><label>Email</label><input id="fundEmail" type="email" placeholder="Your email"></div>
+<button class="btn" onclick="fundReal()">Pay with Paystack</button>
+<button class="btn btn-outline" onclick="showPage('homePage')">Back to Home</button>
+<p style="font-size:11px;color:#888;margin-top:15px;text-align:center">Secured by Paystack. Money goes to your business account.</p>
+</div>
+
+<div id="transferPage" class="page">
+<h3 style="margin-bottom:20px">Transfer</h3>
+<div class="input-group"><label>Account Number</label><input id="toAcct" placeholder="0123456789"></div>
+<div class="input-group"><label>Amount</label><input id="toAmount" type="number" placeholder="1000"></div>
+<button class="btn" onclick="doTransfer()">Send Money</button>
+<button class="btn btn-outline" onclick="showPage('homePage')">Back to Home</button>
+</div>
+
+<div id="airtimePage" class="page">
+<h3 style="margin-bottom:20px">Buy Airtime</h3>
+<div class="input-group"><label>Phone Number</label><input id="airPhone" placeholder="0810..."></div>
+<div class="input-group"><label>Amount</label><input id="airAmount" type="number" placeholder="500"></div>
+<button class="btn" onclick="buyAirtime()">Buy Now</button>
+<button class="btn btn-outline" onclick="showPage('homePage')">Back to Home</button>
+</div>
+
+</div>
+<script>
+const PAYSTACK_KEY = "pk_test_af62b13850281e5c92f23934c7378f8334bb5169";
+let currentUser = JSON.parse(localStorage.getItem('9pay_current'));
+let users = JSON.parse(localStorage.getItem('9pay_users') || '[]');
+let balance = parseFloat(localStorage.getItem('9pay_balance') || '0');
+let txs = JSON.parse(localStorage.getItem('9pay_txs') || '[]');
+
+function showPage(id){
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+if(id==='homePage') loadHome();
+if(id==='fundPage' && currentUser){document.getElementById('fundEmail').value=currentUser.email||'';}
+}
+
+function register(){
+const name=document.getElementById('regName').value.trim();
+const email=document.getElementById('regEmail').value.trim();
+const phone=document.getElementById('regPhone').value.trim();
+const pin=document.getElementById('regPin').value.trim();
+if(!name||!email||!phone||pin.length!==4){alert('Fill all fields, PIN must be 4 digits');return;}
+if(users.find(u=>u.phone===phone)){alert('User exists, please login');showPage('loginPage');return;}
+users.push({name,email,phone,pin});localStorage.setItem('9pay_users',JSON.stringify(users));
+alert('Account created! Now login');showPage('loginPage');
+}
+
+function login(){
+const phone=document.getElementById('loginPhone').value.trim();
+const pin=document.getElementById('loginPin').value.trim();
+const user=users.find(u=>u.phone===phone && u.pin===pin);
+if(!user){alert('Wrong phone or PIN. Create account first.');return;}
+currentUser=user;localStorage.setItem('9pay_current',JSON.stringify(user));showPage('homePage');
+}
+
+function loadHome(){
+if(!currentUser){showPage('loginPage');return;}
+document.getElementById('userName').innerText=currentUser.name.split(' ')[0];
+document.getElementById('userPhone').innerText=currentUser.phone;
+document.getElementById('walletAmount').innerText=balance.toFixed(2);
+document.getElementById('txCount').innerText=txs.length+' tx';
+let html='';txs.slice().reverse().forEach(t=>{
+html+=`<div class="list-item"><span>${t.type} • ${t.to||''}</span><span class="success">₦${t.amount}</span></div>`;
+});
+if(html) document.getElementById('txList').innerHTML=html;
+}
+
+function fundReal(){
+let amt=parseFloat(document.getElementById('fundAmount').value);
+let email=document.getElementById('fundEmail').value.trim();
+if(!amt||amt<100){alert('Minimum is ₦100');return;}
+if(!email){alert('Enter email');return;}
+let handler = PaystackPop.setup({
+key: PAYSTACK_KEY,
+email: email,
+amount: amt * 100,
+currency: 'NGN',
+ref: '9PAY_'+Math.floor((Math.random()*1000000000)+1),
+callback: function(response){
+balance+=amt;localStorage.setItem('9pay_balance',balance);
+txs.push({type:'Funding - Paystack',to:response.reference,amount:amt});localStorage.setItem('9pay_txs',JSON.stringify(txs));
+alert('Success! Wallet funded ₦'+amt+' Ref: '+response.reference);showPage('homePage');
+},
+onClose: function(){alert('Payment cancelled');}
+});
+handler.openIframe();
+}
+
+function doTransfer(){
+let acct=document.getElementById('toAcct').value;let amt=parseFloat(document.getElementById('toAmount').value);
+if(!acct||!amt){alert('Fill all');return;}if(amt>balance){alert('Insufficient balance. Fund wallet first.');return;}
+balance-=amt;localStorage.setItem('9pay_balance',balance);
+txs.push({type:'Transfer',to:acct,amount:amt});localStorage.setItem('9pay_txs',JSON.stringify(txs));
+alert('Transfer of ₦'+amt+' to '+acct+' successful');showPage('homePage');
+}
+
+function buyAirtime(){
+let ph=document.getElementById('airPhone').value;let amt=parseFloat(document.getElementById('airAmount').value);
+if(!ph||!amt){alert('Fill all');return;}if(amt>balance){alert('Insufficient balance');return;}
+balance-=amt;localStorage.setItem('9pay_balance',balance);
+txs.push({type:'Airtime',to:ph,amount:amt});localStorage.setItem('9pay_txs',JSON.stringify(txs));
+alert('Airtime ₦'+amt+' sent to '+ph);showPage('homePage');
+}
+
+function logout(){localStorage.removeItem('9pay_current');currentUser=null;showPage('loginPage');}
+
+if(currentUser) showPage('homePage');
+</script>
+</body>
+  </html>
