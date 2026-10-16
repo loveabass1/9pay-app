@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>9jaPayment - Login</title>
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,sans-serif}
+body{background:#f5f7f9}
+.center{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.box{background:white;width:100%;max-width:380px;border-radius:20px;padding:25px;box-shadow:0 10px 30px #0001}
+input{width:100%;padding:14px;border:1.5px solid #ddd;border-radius:12px;margin:8px 0 15px;font-size:16px}
+.btn{width:100%;padding:14px;background:#0f9e6a;color:white;border:none;border-radius:12px;font-size:16px;font-weight:700;margin-top:10px}
+.link{text-align:center;margin-top:15px;color:#0f9e6a;cursor:pointer;font-weight:600}
+.header{background:#0f9e6a;color:white;padding:25px 20px;display:flex;justify-content:space-between;align-items:center}
+.balance{padding:20px}.balance h1{font-size:42px}
+.actions{background:white;margin:10px 15px;border-radius:18px;display:flex;justify-content:space-around;padding:18px;box-shadow:0 2px 10px #0001}
+.circle{width:65px;height:65px;background:#c8f0d9;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;color:#0f9e6a;margin-bottom:8px}
+.services{padding:15px}.grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-top:15px}
+.card{background:white;border-radius:16px;padding:18px 5px;text-align:center;box-shadow:0 2px 8px #0001;font-size:14px;font-weight:600}
+.card span{font-size:28px;display:block;margin-bottom:8px}
+.history{padding:15px}.empty{text-align:center;padding:40px;color:gray}
+.small{font-size:13px;color:gray;text-align:center;margin-top:10px}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen" class="center">
+  <div class="box">
+    <h2 style="text-align:center;margin-bottom:5px">9jaPayment</h2>
+    <p class="small">Login to your wallet</p>
+    <div style="margin-top:20px">
+      <label>Phone Number</label>
+      <input id="loginPhone" type="tel" placeholder="08012345678">
+      <label>Password</label>
+      <input id="loginPass" type="password" placeholder="••••••••">
+      <button class="btn" onclick="doLogin()">Login</button>
+      <div class="link" onclick="showSignup()">Don't have account? Create account</div>
+    </div>
+  </div>
+</div>
+
+<!-- SIGNUP SCREEN -->
+<div id="signupScreen" class="center" style="display:none">
+  <div class="box">
+    <h2 style="text-align:center">Create Account</h2>
+    <p class="small">Join 9jaPayment</p>
+    <div style="margin-top:20px">
+      <label>Full Name</label>
+      <input id="regName" placeholder="Love Ade">
+      <label>Phone Number</label>
+      <input id="regPhone" type="tel" placeholder="08012345678">
+      <label>Password</label>
+      <input id="regPass" type="password" placeholder="Create password">
+      <button class="btn" onclick="doSignup()">Create Account</button>
+      <div class="link" onclick="showLogin()">Already have account? Login</div>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dash" style="display:none">
+  <div class="header">
+    <h2 id="hiName">Hi, Love</h2>
+    <div style="display:flex;gap:15px;align-items:center">
+      <span style="font-size:28px">🔔</span>
+      <span onclick="doLogout()" style="font-size:14px;background:#ffffff33;padding:6px 12px;border-radius:20px;cursor:pointer">Logout</span>
+    </div>
+  </div>
+  <div class="balance">
+    <h1>₦<span id="bal">0.00</span></h1>
+    <p>Available • 👁️</p>
+  </div>
+  <div class="actions">
+    <button onclick="pay()"><div class="circle">+</div>Add</button>
+    <button onclick="alert('Transfer coming soon')"><div class="circle">↗</div>Transfer</button>
+    <button onclick="alert('Withdraw coming soon')"><div class="circle">↘</div>Withdraw</button>
+  </div>
+  <div class="services">
+    <h2>Services</h2>
+    <div class="grid">
+      <div class="card"><span>📱</span>Airtime</div>
+      <div class="card"><span>📶</span>Data</div>
+      <div class="card"><span>🟢</span>Betting</div>
+      <div class="card"><span>💡</span>Light</div>
+      <div class="card"><span>📺</span>TV</div>
+      <div class="card"><span>💳</span>Card</div>
+      <div class="card"><span>🕒</span>History</div>
+      <div class="card"><span>•••</span>More</div>
+    </div>
+  </div>
+  <div class="history">
+    <h2>Transaction history</h2>
+    <div class="empty" id="tx"><div style="font-size:50px">📄</div><p>No transactions.<br>Tap Add Money.</p></div>
+  </div>
+</div>
+
+<script>
+// Simple user database in browser (for testing - later we use Firebase)
+function getUsers(){return JSON.parse(localStorage.getItem('9ja_users')||'{}')}
+function saveUsers(u){localStorage.setItem('9ja_users', JSON.stringify(u))}
+
+function showSignup(){document.getElementById('loginScreen').style.display='none';document.getElementById('signupScreen').style.display='flex'}
+function showLogin(){document.getElementById('signupScreen').style.display='none';document.getElementById('loginScreen').style.display='flex'}
+
+function doSignup(){
+  let name=document.getElementById('regName').value.trim();
+  let phone=document.getElementById('regPhone').value.trim();
+  let pass=document.getElementById('regPass').value.trim();
+  if(!name||!phone||!pass){alert('Fill all fields');return}
+  let users=getUsers();
+  if(users[phone]){alert('Account exists, please login');showLogin();return}
+  users[phone]={name:name,pass:pass,balance:0,tx:[]};
+  saveUsers(users);
+  localStorage.setItem('9ja_current', phone);
+  loadDash();
+}
+function doLogin(){
+  let phone=document.getElementById('loginPhone').value.trim();
+  let pass=document.getElementById('loginPass').value.trim();
+  let users=getUsers();
+  if(!users[phone]||users[phone].pass!==pass){alert('Wrong phone or password');return}
+  localStorage.setItem('9ja_current', phone);
+  loadDash();
+}
+function doLogout(){localStorage.removeItem('9ja_current');document.getElementById('dash').style.display='none';document.getElementById('loginScreen').style.display='flex'}
+
+function loadDash(){
+  let phone=localStorage.getItem('9ja_current');
+  if(!phone)return;
+  let users=getUsers();
+  let user=users[phone];
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('signupScreen').style.display='none';
+  document.getElementById('dash').style.display='block';
+  document.getElementById('hiName').innerText='Hi, '+user.name.split(' ')[0];
+  document.getElementById('bal').innerText=user.balance.toFixed(2);
+  if(user.tx.length>0){document.getElementById('tx').innerHTML=user.tx.join('')}
+}
+function pay(){
+  let phone=localStorage.getItem('9ja_current');
+  let users=getUsers();
+  let handler=PaystackPop.setup({
+    key:'pk_test_af62b13850281e5c92f23934c7378f8334bb5169',
+    email: phone+'@9japayment.com',
+    amount:100000,
+    currency:'NGN',
+    callback:function(res){
+      users[phone].balance+=1000;
+      let html='<p style="color:green;padding:8px;border-bottom:1px solid #eee">✅ ₦1000 Funded - '+res.reference+'</p>';
+      users[phone].tx.unshift(html);
+      saveUsers(users);
+      loadDash();
+      alert('Success! ₦1000 added');
+    },
+    onClose:function(){}
+  });
+  handler.openIframe();
+}
+// auto login if already logged
+if(localStorage.getItem('9ja_current')){loadDash()}
+</script>
+</body>
+        </html>
