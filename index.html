@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#087b43">
+<title>9PAY - Digital Wallet</title>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f3f8f4;color:#183426;font-family:Arial,sans-serif}
+header{padding:20px 6%;background:white;border-bottom:1px solid #e1ebe4}
+.logo{font-size:30px;font-weight:900;color:#087b43}
+.logo span{color:#183426}
+.hero{background:linear-gradient(135deg,#087b43,#034e2b);color:white;text-align:center;padding:40px 20px 75px}
+.hero h1{margin:0 0 12px;font-size:35px}
+.hero p{line-height:1.7;margin:auto;max-width:400px}
+.container{max-width:460px;width:92%;margin:-42px auto 35px;position:relative}
+.card{background:white;padding:25px 22px;border-radius:18px;box-shadow:0 10px 30px #17332614}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:5px;background:#f0f5f1;border-radius:10px;margin-bottom:25px}
+.tab{border:0;padding:13px 5px;border-radius:8px;background:transparent;color:#718078;font-weight:bold}
+.tab.active{background:white;color:#087b43;box-shadow:0 2px 8px #0000000d}
+h2{font-size:23px;margin:0 0 8px}
+.subtitle{font-size:14px;line-height:1.6;color:#718078;margin:0 0 22px}
+.field{margin-bottom:17px}
+label{display:block;font-size:13px;font-weight:bold;margin-bottom:8px}
+input{width:100%;padding:14px;border:1px solid #d8e4dc;border-radius:10px;font-size:15px;outline:none}
+input:focus{border-color:#087b43}
+.primary{width:100%;padding:15px;border:0;border-radius:10px;background:#087b43;color:white;font-size:15px;font-weight:bold;cursor:pointer}
+.primary:disabled{opacity:.6}
+.text-button{display:block;margin:17px auto 0;border:0;background:transparent;color:#087b43;font-weight:bold;cursor:pointer;padding:8px}
+.message{display:none;padding:12px;border-radius:9px;font-size:13px;line-height:1.6;margin-bottom:17px;overflow-wrap:anywhere}
+.message.success{display:block;background:#e9f7ef;color:#086638}
+.message.error{display:block;background:#fff0ef;color:#b42318}
+.hidden{display:none!important}
+.account-box,.balance-box{padding:18px;border-radius:12px;margin:18px 0;background:#e9f7ef;text-align:left}
+.account-number{display:block;font-size:23px;font-weight:bold;margin:10px 0;overflow-wrap:anywhere}
+.balance-box{background:white;border:1px solid #e1ebe4;text-align:center}
+.balance{font-size:28px;font-weight:bold;margin:10px 0}
+.notice{font-size:12px;color:#718078;line-height:1.7;text-align:center;margin-top:22px}
+footer{text-align:center;padding:0 20px 25px;font-size:12px;color:#718078}
+</style>
+</head>
+
+<body>
+<header><div class="logo">9<span>PAY</span></div></header>
+
+<section class="hero">
+<h1>Welcome to 9PAY</h1>
+<p>Your digital wallet experience. Create an account and get started.</p>
+</section>
+
+<main class="container">
+<section class="card">
+
+<div id="tabs" class="tabs">
+<button type="button" id="loginTab" class="tab active">Log In</button>
+<button type="button" id="signupTab" class="tab">Create Account</button>
+</div>
+
+<div id="message" class="message" role="status" aria-live="polite"></div>
+
+<form id="loginForm">
+<h2>Welcome back</h2>
+<p class="subtitle">Log in to your 9PAY account.</p>
+<div class="field">
+<label for="loginEmail">Email address</label>
+<input id="loginEmail" type="email" autocomplete="email" required placeholder="you@example.com">
+</div>
+<div class="field">
+<label for="loginPassword">Password</label>
+<input id="loginPassword" type="password" autocomplete="current-password" required placeholder="Enter your password">
+</div>
+<button class="primary" type="submit">Log In</button>
+<button class="text-button" id="forgotButton" type="button">Forgot your password?</button>
+</form>
+
+<form id="signupForm" class="hidden">
+<h2>Create your account</h2>
+<p class="subtitle">Join 9PAY in a few simple steps.</p>
+<div class="field">
+<label for="fullName">Full name</label>
+<input id="fullName" autocomplete="name" required placeholder="Enter your full name">
+</div>
+<div class="field">
+<label for="phone">Phone number</label>
+<input id="phone" type="tel" autocomplete="tel" required placeholder="08012345678">
+</div>
+<div class="field">
+<label for="signupEmail">Email address</label>
+<input id="signupEmail" type="email" autocomplete="email" required placeholder="you@example.com">
+</div>
+<div class="field">
+<label for="signupPassword">Create password</label>
+<input id="signupPassword" type="password" autocomplete="new-password" minlength="8" required placeholder="At least 8 characters">
+</div>
+<div class="field">
+<label for="confirmPassword">Confirm password</label>
+<input id="confirmPassword" type="password" autocomplete="new-password" minlength="8" required placeholder="Enter password again">
+</div>
+<button class="primary" type="submit">Create Account</button>
+</form>
+
+<form id="recoveryForm" class="hidden">
+<h2>Reset password</h2>
+<p class="subtitle">Enter your email address to request a password-reset link.</p>
+<div class="field">
+<label for="recoveryEmail">Email address</label>
+<input id="recoveryEmail" type="email" autocomplete="email" required placeholder="you@example.com">
+</div>
+<button class="primary" type="submit">Send Recovery Link</button>
+<button class="text-button backButton" type="button">Back to Log In</button>
+</form>
+
+<form id="newPasswordForm" class="hidden">
+<h2>Choose a new password</h2>
+<p class="subtitle">Enter your new password below.</p>
+<div class="field">
+<label for="newPassword">New password</label>
+<input id="newPassword" type="password" minlength="8" autocomplete="new-password" required>
+</div>
+<div class="field">
+<label for="newPasswordConfirm">Confirm new password</label>
+<input id="newPasswordConfirm" type="password" minlength="8" autocomplete="new-password" required>
+</div>
+<button class="primary" type="submit">Update Password</button>
+</form>
+
+<section id="dashboard" class="hidden">
+<h2 id="welcomeName">Welcome to 9PAY</h2>
+<p id="userEmail" class="subtitle"></p>
+<div class="account-box">
+<small>Your 9PAY account number</small>
+<strong id="accountNumber" class="account-number">Not yet assigned</strong>
+<small id="accountNote">Account-number generation is not yet enabled.</small>
+</div>
+<div class="balance-box">
+<small>Wallet balance</small>
+<div class="balance">₦0.00</div>
+<small>Wallet transactions are not yet enabled.</small>
+</div>
+<button id="logoutButton" class="primary" type="button">Log Out</button>
+</section>
+
+<p class="notice">9PAY registration is separate from bank account registration. Real deposits, withdrawals and transfers require additional secure setup and payment-provider integration.</p>
+</section>
+</main>
+
+<footer>© <span id="year"></span> 9PAY. All rights reserved.</footer>
+
+<!-- Load Supabase separately from the interface controls. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+(function () {
+  "use strict";
+
+  const $ = id => document.getElementById(id);
+
+  const forms = {
+    login: $("loginForm"),
+    signup: $("signupForm"),
+    recovery: $("recoveryForm"),
+    newPassword: $("newPasswordForm")
+  };
+
+  const message = $("message");
+  const tabs = $("tabs");
+  const dashboard = $("dashboard");
+
+  let client = null;
+  let recoverySessionReady = false;
+
+  $("year").textContent = new Date().getFullYear();
+
+  function showMessage(text, type) {
+    message.textContent = text;
+    message.className = "message " + (type || "success");
+  }
+
+  function clearMessage() {
+    message.textContent = "";
+    message.className = "message";
+  }
+
+  function showMode(mode) {
+    clearMessage();
+
+    Object.keys(forms).forEach(key => {
+      forms[key].classList.toggle("hidden", key !== mode);
+    });
+
+    dashboard.classList.add("hidden");
+    tabs.classList.toggle("hidden", mode === "recovery" || mode === "newPassword");
+
+    $("loginTab").classList.toggle("active", mode === "login");
+    $("signupTab").classList.toggle("active", mode === "signup");
+  }
+
+  function getClient() {
+    if (client) return client;
+
+    if (!window.supabase || !window.supabase.createClient) {
+      throw new Error("The secure connection library did not load. Check your internet connection and refresh the page.");
+    }
+
+    client = window.supabase.createClient(
+      "https://stbcjnblpierdjpdcvoa.supabase.co",
+      "sb_publishable_XS_N_wc6SNqxrV_ZrO-9gg_GBvPIbDE",
+      {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true
+        }
+      }
+    );
+
+    client.auth.onAuthStateChange((event, session) => {
+      if (event === "PASSWORD_RECOVERY") {
+        recoverySessionReady = true;
+        showMode("newPassword");
+        showMessage("Enter your new password.", "success");
+      } else if (event === "SIGNED_OUT") {
+        dashboard.classList.add("hidden");
+        showMode("login");
+      } else if (event === "INITIAL_SESSION" && session) {
+        displayDashboard(session.user);
+      }
+    });
+
+    return client;
+  }
+
+  function friendlyError(error) {
+    const text = String(error && error.message || "");
+
+    if (/invalid login credentials/i.test(text)) {
+      return "Incorrect email or password. Please check your details.";
+    }
+
+    if (/email not confirmed/i.test(text)) {
+      return "Please confirm your email using the link sent to your inbox.";
+    }
+
+    if (/user already registered/i.test(text)) {
+      return "This email already has an account. Please log in.";
+    }
+
+    return text || "Something went wrong. Please try again.";
+  }
+
+  async function runForm(form, action) {
+    const button = form.querySelector('[type="submit"]');
+    const original = button.textContent;
+
+    button.disabled = true;
+    button.textContent = "Please wait...";
+    clearMessage();
+
+    try {
+      await action();
+    } catch (error) {
+      showMessage(friendlyError(error), "error");
+    } finally {
+      button.disabled = false;
+      button.textContent = original;
+    }
+  }
+
+  $("loginTab").addEventListener("click", () => showMode("login"));
+  $("signupTab").addEventListener("click", () => showMode("signup"));
+
+  $("forgotButton").addEventListener("click", () => {
+    $("recoveryEmail").value = $("loginEmail").value.trim();
+    showMode("recovery");
+  });
+
+  document.querySelectorAll(".backButton").forEach(button => {
+    button.addEventListener("click", () => showMode("login"));
+  });
+
+  forms.signup.addEventListener("submit", event => {
+    event.preventDefault();
+
+    runForm(forms.signup, async () => {
+      const fullName = $("fullName").value.trim();
+      const phone = $("phone").value.trim();
+      const email = $("signupEmail").value.trim();
+      const password = $("signupPassword").value;
+
+      if (password !== $("confirmPassword").value) {
+        throw new Error("The passwords do not match.");
+      }
+
+      if (password.length < 8) {
+        throw new Error("Your password must contain at least 8 characters.");
+      }
+
+      const api = getClient();
+
+      const { data, error } = await api.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: location.origin + location.pathname,
+          data: {
+            full_name: fullName,
+            phone: phone
+          }
+        }
+      });
+
+      if (error) throw error;
+
+      if (data.session) {
+        await displayDashboard(data.user);
+        showMessage("Your account has been created.", "success");
+      } else {
+        showMode("login");
+        showMessage("Registration submitted. Check your email for the confirmation link before logging in.", "success");
+      }
+    });
+  });
+
+  forms.login.addEventListener("submit", event => {
+    event.preventDefault();
+
+    runForm(forms.login, async () => {
+      const api = getClient();
+
+      const { data, error } = await api.auth.signInWithPassword({
+        email: $("loginEmail").value.trim(),
+        password: $("loginPassword").value
+      });
+
+      if (error) throw error;
+
+      await displayDashboard(data.user);
+      showMessage("You have successfully logged in.", "success");
+    });
+  });
+
+  forms.recovery.addEventListener("submit", event => {
+    event.preventDefault();
+
+    runForm(forms.recovery, async () => {
+      const api = getClient();
+
+      const { error } = await api.auth.resetPasswordForEmail(
+        $("recoveryEmail").value.trim(),
+        {
+          redirectTo: location.origin + location.pathname
+        }
+      );
+
+      if (error) throw error;
+
+      showMessage("If this email is registered, a password-reset link will be sent. Check your inbox and spam folder.", "success");
+    });
+  });
+
+  forms.newPassword.addEventListener("submit", event => {
+    event.preventDefault();
+
+    runForm(forms.newPassword, async () => {
+      if ($("newPassword").value !== $("newPasswordConfirm").value) {
+        throw new Error("The passwords do not match.");
+      }
+
+      if (!recoverySessionReady) {
+        throw new Error("Open the password-reset link from your email first.");
+      }
+
+      const { error } = await getClient().auth.updateUser({
+        password: $("newPassword").value
+      });
+
+      if (error) throw error;
+
+      recoverySessionReady = false;
+      showMode("login");
+      showMessage("Password updated successfully. You can now log in.", "success");
+    });
+  });
+
+  async function displayDashboard(user) {
+    Object.values(forms).forEach(form => form.classList.add("hidden"));
+    tabs.classList.add("hidden");
+    dashboard.classList.remove("hidden");
+
+    $("welcomeName").textContent =
+      user.user_metadata && user.user_metadata.full_name || "Welcome to 9PAY";
+
+    $("userEmail").textContent = user.email || "";
+    $("accountNumber").textContent = "Not yet assigned";
+    $("accountNote").textContent = "Automatic account-number generation is not yet enabled.";
+
+    try {
+      const { data, error } = await getClient()
+        .from("profiles")
+        .select("full_name, account_number")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      if (!error && data) {
+        if (data.full_name) $("welcomeName").textContent = data.full_name;
+
+        if (data.account_number) {
+          $("accountNumber").textContent = data.account_number;
+          $("accountNote").textContent = "Your internal 9PAY account number.";
+        }
+      }
+    } catch (error) {
+      console.log("Profile information is not available yet.");
+    }
+  }
+
+  $("logoutButton").addEventListener("click", async () => {
+    try {
+      const { error } = await getClient().auth.signOut();
+      if (error) throw error;
+      dashboard.classList.add("hidden");
+      showMode("login");
+      showMessage("You have logged out.", "success");
+    } catch (error) {
+      showMessage(friendlyError(error), "error");
+    }
+  });
+
+  // Attempt to restore a previous login without blocking the buttons.
+  try {
+    const api = getClient();
+    api.auth.getSession().then(({ data, error }) => {
+      if (error) {
+        console.error(error);
+        return;
+      }
+      if (data.session) displayDashboard(data.session.user);
+    }).catch(error => console.error(error));
+  } catch (error) {
+    console.warn("Supabase is not available yet. The form buttons will still work.");
+  }
+})();
+</script>
+
+</body>
+  </html>
