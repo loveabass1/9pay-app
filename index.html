@@ -2,109 +2,134 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>9jaPayment V2</title>
+<title>9Pay - V3 Account Number</title>
 <script src="https://js.paystack.co/v1/inline.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,sans-serif}
-body{background:#f5f7f9}
+body{background:#f2f4f7}
 .hidden{display:none}
-.page{max-width:420px;margin:0 auto;background:white;min-height:100vh}
-.header{background:#0f9e6a;color:white;padding:22px;display:flex;justify-content:space-between}
-input{width:100%;padding:14px;border:1px solid #ddd;border-radius:10px;margin:8px 0}
-.btn{width:100%;padding:14px;background:#0f9e6a;color:white;border:none;border-radius:10px;font-weight:700;margin-top:10px}
-.link{color:#0f9e6a;text-align:center;display:block;margin:12px}
-.balance{padding:20px;background:#0f9e6a;color:white}
-.balance h1{font-size:38px}
-.actions{display:flex;justify-content:space-around;background:white;margin:12px;border-radius:16px;padding:14px;box-shadow:0 2px 10px #0001}
-.circle{width:60px;height:60px;background:#c8f0d9;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;color:#0f9e6a;margin:0 auto 6px}
-.card{background:white;border-radius:14px;padding:15px;text-align:center;box-shadow:0 2px 8px #0001}
-.grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px}
+.page{max-width:420px;margin:0 auto;background:white;min-height:100vh;box-shadow:0 0 20px #0001}
+.header{background:#0f9e6a;color:white;padding:20px;display:flex;justify-content:space-between;align-items:center}
+input{width:100%;padding:14px;border:1.5px solid #ddd;border-radius:12px;margin:8px 0;font-size:16px}
+.btn{width:100%;padding:14px;background:#0f9e6a;color:white;border:none;border-radius:12px;font-weight:700;font-size:16px;margin-top:10px}
+.btn2{background:#e8f8ef;color:#0f9e6a}
+.link{color:#0f9e6a;text-align:center;display:block;margin:14px;cursor:pointer}
+.balance{background:#0f9e6a;color:white;padding:22px}
+.balance h1{font-size:38px;margin:5px 0}
+.acctBox{background:rgba(255,255,255,0.2);padding:10px 14px;border-radius:10px;margin-top:10px;display:flex;justify-content:space-between}
+.actions{display:flex;justify-content:space-around;background:white;margin:12px;border-radius:18px;padding:16px;box-shadow:0 4px 15px #0001}
+.circle{width:60px;height:60px;background:#c8f0d9;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;color:#0f9e6a;margin:0 auto 6px}
+.note{background:#fff3cd;padding:10px;border-radius:8px;font-size:13px;margin:10px 0}
 </style>
 </head>
 <body>
 <div class="page">
 
 <!-- LOGIN -->
-<div id="loginPage" style="padding:25px">
-<h2>Welcome to 9jaPayment</h2>
-<p>Login to continue</p>
+<div id="loginPage" style="padding:28px">
+<h2 style="font-size:26px">Welcome to 9Pay 💚</h2>
+<p style="color:gray;margin:8px 0 20px">Fast, secure payments</p>
 <input id="lEmail" placeholder="Email address">
 <input id="lPass" type="password" placeholder="Password">
 <button class="btn" onclick="login()">Login</button>
-<span class="link" onclick="showForgot()">Forgot Password?</span>
-<span class="link" onclick="showPage('signupPage')">Don't have account? Sign Up</span>
-<p id="lErr" style="color:red;text-align:center"></p>
+<span class="link" onclick="showPage('forgotPage')">Forgot Password?</span>
+<span class="link" onclick="showPage('signupPage')"><b>Create new account</b></span>
+<p id="lErr" style="color:red;text-align:center;margin-top:10px"></p>
 </div>
 
 <!-- SIGNUP -->
-<div id="signupPage" class="hidden" style="padding:25px">
+<div id="signupPage" class="hidden" style="padding:28px">
 <h2>Create Account</h2>
+<p style="color:gray;margin:6px 0 15px">Get your free 9Pay account number</p>
 <input id="sName" placeholder="Full Name">
 <input id="sEmail" placeholder="Email address">
-<input id="sPass" type="password" placeholder="Password (min 6)">
+<input id="sPass" type="password" placeholder="Password (min 6 characters)">
 <button class="btn" onclick="signup()">Create Account</button>
-<span class="link" onclick="showPage('loginPage')">Have account? Login</span>
+<span class="link" onclick="showPage('loginPage')">Already have account? Login</span>
 <p id="sErr" style="color:red;text-align:center"></p>
 </div>
 
 <!-- OTP -->
-<div id="otpPage" class="hidden" style="padding:25px">
-<h2>Enter OTP</h2>
-<p>OTP sent to your email (demo: 123456)</p>
-<input id="otpInput" placeholder="Enter 6-digit OTP">
-<button class="btn" onclick="verifyOTP()">Verify OTP</button>
-<p id="otpErr" style="color:red"></p>
+<div id="otpPage" class="hidden" style="padding:28px">
+<h2>Verify OTP</h2>
+<div class="note">⚠️ TEST MODE: We are using demo OTP. Enter <b>123456</b> to verify. Real SMS will come after we connect Termii.</div>
+<p id="otpEmail" style="margin:10px 0;color:gray"></p>
+<input id="otpInput" placeholder="Enter OTP - use 123456">
+<button class="btn" onclick="verifyOTP()">Verify & Continue</button>
+<p id="otpErr" style="color:red;margin-top:10px"></p>
 </div>
 
 <!-- FORGOT -->
-<div id="forgotPage" class="hidden" style="padding:25px">
-<h2>Forgot Password</h2>
+<div id="forgotPage" class="hidden" style="padding:28px">
+<h2>Reset Password</h2>
+<div class="note">Enter <b>123456</b> as OTP for now</div>
 <input id="fEmail" placeholder="Your Email">
-<input id="fOtp" placeholder="OTP (use 123456)">
+<input id="fOtp" placeholder="OTP (123456)">
 <input id="fNewPass" type="password" placeholder="New Password (min 6)">
 <button class="btn" onclick="resetPass()">Reset Password</button>
 <span class="link" onclick="showPage('loginPage')">Back to Login</span>
-<p id="fErr" style="color:red"></p>
+<p id="fErr" style="color:red;text-align:center"></p>
 </div>
 
 <!-- DASHBOARD -->
 <div id="dashPage" class="hidden">
-<div class="header"><h3 id="hiUser">Hi</h3><span onclick="logout()">Logout</span></div>
-<div class="balance"><h1>₦<span id="bal">0.00</span></h1><p id="userEmail"></p></div>
+<div class="header">
+<div><h3 id="hiUser">Hi</h3><small id="userEmailSmall"></small></div>
+<span onclick="logout()" style="background:white;color:#0f9e6a;padding:6px 12px;border-radius:20px;font-size:13px">Logout</span>
+</div>
+<div class="balance">
+<p style="opacity:0.9">Available Balance</p>
+<h1>₦<span id="bal">0.00</span></h1>
+<div class="acctBox">
+<div><small>9Pay Account No</small><br><b id="myAcct" style="font-size:18px;letter-spacing:1px"></b></div>
+<span onclick="copyAcct()" style="cursor:pointer">📋 Copy</span>
+</div>
+<small style="display:block;margin-top:10px;opacity:0.9">Bank Name: 9Pay Microfinance (Demo) - Any bank can transfer to you when we enable live</small>
+</div>
 
 <div class="actions">
-<button onclick="fund()"><div class="circle">+</div>Add</button>
-<button onclick="showPage('transferPage')"><div class="circle">↗</div>Send to 9Pay</button>
-<button onclick="alert('Bank transfer needs Paystack live key')"><div class="circle">🏦</div>To Bank</button>
+<button onclick="fund()"><div class="circle">+</div><small>Add Money</small></button>
+<button onclick="showPage('transferPage')"><div class="circle">↗</div><small>To 9Pay</small></button>
+<button onclick="showPage('bankPage')"><div class="circle">🏦</div><small>To Bank</small></button>
 </div>
 
-<div style="padding:15px">
-<h3>Quick Transfer (No third party)</h3>
-<div id="txList"></div>
+<div style="padding:16px">
+<h3>Transactions</h3>
+<div id="txList" style="margin-top:10px"></div>
 </div>
 </div>
 
-<!-- TRANSFER -->
-<div id="transferPage" class="hidden" style="padding:25px">
-<h2>Send to 9Pay User (Free)</h2>
-<p>No Paystack needed - internal transfer</p>
-<input id="tEmail" placeholder="Receiver Email">
-<input id="tAmt" type="number" placeholder="Amount">
+<!-- TRANSFER TO 9PAY -->
+<div id="transferPage" class="hidden" style="padding:28px">
+<h2>Send to 9Pay User</h2>
+<p style="color:gray;font-size:13px;margin:6px 0 15px">No fee, no Paystack, instant - Internal transfer</p>
+<input id="tAcct" placeholder="Receiver 9Pay Account Number (10 digits)">
+<input id="tAmt" type="number" placeholder="Amount e.g 1000">
+<input id="tNote" placeholder="Note (optional)">
 <button class="btn" onclick="doTransfer()">Send Now</button>
-<span class="link" onclick="showPage('dashPage')">Back</span>
-<p id="tErr" style="color:red"></p>
+<span class="link" onclick="showPage('dashPage')">← Back to Dashboard</span>
+<p id="tErr" style="color:red;text-align:center;margin-top:10px"></p>
+<p id="tSuccess" style="color:green;text-align:center;margin-top:10px"></p>
+</div>
+
+<!-- BANK TRANSFER INFO -->
+<div id="bankPage" class="hidden" style="padding:28px">
+<h2>Transfer to Bank</h2>
+<div class="note">To enable real bank transfers (GTB, Opay etc) and to receive money from any bank, you need to activate <b>Paystack Dedicated Virtual Account</b> with your LIVE key. Contact me when you have live key.</div>
+<button class="btn btn2" onclick="showPage('dashPage')">Back</button>
 </div>
 
 </div>
 
 <script>
-// SIMPLE DB
-let users = JSON.parse(localStorage.getItem('9ja_users')||'{}');
-let currentUser = localStorage.getItem('9ja_current');
+let users = JSON.parse(localStorage.getItem('9ja_users_v3')||'{}');
+let currentUser = localStorage.getItem('9ja_current_v3');
 let pendingEmail = '';
 
+function genAcct(){ return '9' + Math.floor(100000000 + Math.random()*900000000).toString(); }
+
 function showPage(id){
-['loginPage','signupPage','otpPage','forgotPage','dashPage','transferPage'].forEach(p=>document.getElementById(p).classList.add('hidden'));
+['loginPage','signupPage','otpPage','forgotPage','dashPage','transferPage','bankPage'].forEach(p=>document.getElementById(p).classList.add('hidden'));
 document.getElementById(id).classList.remove('hidden');
 }
 
@@ -114,97 +139,18 @@ let email=document.getElementById('sEmail').value.trim().toLowerCase();
 let pass=document.getElementById('sPass').value;
 if(!name||!email||!pass){document.getElementById('sErr').innerText='Fill all fields';return}
 if(pass.length<6){document.getElementById('sErr').innerText='Password must not be less than 6 characters';return}
-if(users[email]){document.getElementById('sErr').innerText='Email already exists';return}
-users[email]={name,email,pass,balance:0,verified:false};
-localStorage.setItem('9ja_users',JSON.stringify(users));
+if(users[email]){document.getElementById('sErr').innerText='Email already exists, login';return}
+// Check acct duplicate
+let acct=genAcct();
+while(Object.values(users).some(u=>u.acct===acct)){acct=genAcct();}
+users[email]={name,email,pass,acct,balance:0,verified:false};
+localStorage.setItem('9ja_users_v3',JSON.stringify(users));
 pendingEmail=email;
+document.getElementById('otpEmail').innerText='OTP sent to '+email+' - Your new 9Pay Acct: '+acct;
 showPage('otpPage');
 }
 
 function verifyOTP(){
-let otp=document.getElementById('otpInput').value;
-if(otp!=='123456'){document.getElementById('otpErr').innerText='Invalid OTP, use 123456 for demo';return}
-users[pendingEmail].verified=true;
-localStorage.setItem('9ja_users',JSON.stringify(users));
-alert('Verified! Now login');
-showPage('loginPage');
-}
-
-function login(){
-let email=document.getElementById('lEmail').value.trim().toLowerCase();
-let pass=document.getElementById('lPass').value;
-if(pass.length<6){document.getElementById('lErr').innerText='Password must not be less than 6 characters';return}
-if(!users[email]){document.getElementById('lErr').innerText='Account not found, sign up';return}
-if(users[email].pass!==pass){document.getElementById('lErr').innerText='Wrong password';return}
-if(!users[email].verified){document.getElementById('lErr').innerText='Please verify OTP first';pendingEmail=email;showPage('otpPage');return}
-currentUser=email;
-localStorage.setItem('9ja_current',email);
-loadDash();
-}
-
-function loadDash(){
-showPage('dashPage');
-let u=users[currentUser];
-document.getElementById('hiUser').innerText='Hi, '+u.name;
-document.getElementById('userEmail').innerText=u.email;
-document.getElementById('bal').innerText=u.balance.toFixed(2);
-let tx=JSON.parse(localStorage.getItem('9ja_tx_'+currentUser)||'[]');
-document.getElementById('txList').innerHTML=tx.length?tx.map(t=>'<div style="background:#f9f9f9;padding:10px;margin:6px 0;border-radius:8px">'+t+'</div>').join(''):'<p style="color:gray">No transactions yet</p>';
-}
-
-function fund(){
-let handler=PaystackPop.setup({
-key:'pk_test_af62b13850281e5c92f23934c7378f8334bb5169',
-email:currentUser,amount:100000,currency:'NGN',
-callback:function(res){
-users[currentUser].balance+=1000;
-localStorage.setItem('9ja_users',JSON.stringify(users));
-addTx('+' + '₦1000 Funded Ref:'+res.reference);
-loadDash();
-}
-});handler.openIframe();
-}
-
-function doTransfer(){
-let to=document.getElementById('tEmail').value.trim().toLowerCase();
-let amt=parseFloat(document.getElementById('tAmt').value);
-if(to===currentUser){document.getElementById('tErr').innerText='You cannot transfer to yourself';return}
-if(!users[to]){document.getElementById('tErr').innerText='Receiver not found on 9Pay';return}
-if(!amt||amt<=0){document.getElementById('tErr').innerText='Enter valid amount';return}
-if(users[currentUser].balance<amt){document.getElementById('tErr').innerText='Insufficient balance, fund first';return}
-// NO THIRD PARTY - direct ledger
-users[currentUser].balance-=amt;
-users[to].balance+=amt;
-localStorage.setItem('9ja_users',JSON.stringify(users));
-addTx('Sent ₦'+amt+' to '+to);
-let toTx=JSON.parse(localStorage.getItem('9ja_tx_'+to)||'[]');
-toTx.unshift('Received ₦'+amt+' from '+currentUser);
-localStorage.setItem('9ja_tx_'+to,JSON.stringify(toTx));
-alert('Transfer successful! ₦'+amt+' sent to '+to+' without any third party fee');
-showPage('dashPage');loadDash();
-}
-
-function addTx(msg){
-let arr=JSON.parse(localStorage.getItem('9ja_tx_'+currentUser)||'[]');
-arr.unshift(msg+' - '+new Date().toLocaleString());
-localStorage.setItem('9ja_tx_'+currentUser,JSON.stringify(arr));
-}
-
-function showForgot(){showPage('forgotPage')}
-function resetPass(){
-let email=document.getElementById('fEmail').value.trim().toLowerCase();
-let otp=document.getElementById('fOtp').value;
-let np=document.getElementById('fNewPass').value;
-if(!users[email]){document.getElementById('fErr').innerText='Email not found';return}
-if(otp!=='123456'){document.getElementById('fErr').innerText='OTP invalid, use 123456';return}
-if(np.length<6){document.getElementById('fErr').innerText='Password must not be less than 6 characters';return}
-users[email].pass=np;
-localStorage.setItem('9ja_users',JSON.stringify(users));
-alert('Password reset success, login now');showPage('loginPage');
-}
-function logout(){localStorage.removeItem('9ja_current');showPage('loginPage')}
-
-if(currentUser && users[currentUser]) loadDash();
-</script>
-</body>
-  </html>
+let otp=document.getElementById('otpInput').value.trim();
+if(otp!=='123456'){document.getElementById('otpErr').innerText='Invalid OTP. Enter 123456 for testing';return}
+users[pendingEmail].verified
