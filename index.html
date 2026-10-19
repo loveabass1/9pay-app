@@ -37,23 +37,23 @@ input:focus{border-color:#087b43}
 <div id="authCard" class="card">
 <div id="tabs" class="tabs"><button id="loginTab" class="tab active">Log In</button><button id="signupTab" class="tab">Create Account</button></div>
 <form id="loginForm">
-<h2>Welcome back</h2><p style="font-size:13px;color:#718078;margin-bottom:16px">Log in to your 9PAY account</p>
-<div class="field"><label>Email</label><input id="loginEmail" type="email" required placeholder="you@example.com"></div>
+<h2>Welcome back</h2>
+<div class="field"><label>Email</label><input id="loginEmail" type="email" required></div>
 <div class="field"><label>Password</label><input id="loginPassword" type="password" required></div>
 <button class="primary" type="submit">Log In</button>
 <button type="button" id="forgotButton" class="text-button">Forgot your password?</button>
 </form>
 <form id="signupForm" class="hidden">
-<h2>Create your account</h2><p style="font-size:13px;color:#718078;margin-bottom:16px">Join 9PAY in a few steps</p>
+<h2>Create your account</h2>
 <div class="field"><label>Full name</label><input id="fullName" required></div>
 <div class="field"><label>Phone (080...)</label><input id="phone" type="tel" placeholder="080xxxxxxxxxx" required></div>
-<div class="field"><label>Email</label><input id="signupEmail" type="email" required placeholder="you@example.com"></div>
-<div class="field"><label>Create password</label><input id="signupPassword" type="password" minlength="8" required placeholder="At least 8 characters"></div>
+<div class="field"><label>Email</label><input id="signupEmail" type="email" required></div>
+<div class="field"><label>Password</label><input id="signupPassword" type="password" minlength="8" required></div>
 <div class="field"><label>Confirm password</label><input id="confirmPassword" type="password" minlength="8" required></div>
 <button class="primary" type="submit">Create Account</button>
 </form>
 <form id="recoveryForm" class="hidden">
-<h2>Reset password</h2><p style="font-size:13px;color:#718078;margin-bottom:16px">Enter your email to get reset link</p>
+<h2>Reset password</h2>
 <div class="field"><label>Email</label><input id="recoveryEmail" type="email" required></div>
 <button class="primary" type="submit">Send Recovery Link</button>
 <button type="button" class="text-button backButton">Back to Log In</button>
@@ -61,7 +61,7 @@ input:focus{border-color:#087b43}
 <form id="newPasswordForm" class="hidden">
 <h2>Choose new password</h2>
 <div class="field"><label>New password</label><input id="newPassword" type="password" minlength="8" required></div>
-<div class="field"><label>Confirm new password</label><input id="newPasswordConfirm" type="password" minlength="8" required></div>
+<div class="field"><label>Confirm</label><input id="newPasswordConfirm" type="password" minlength="8" required></div>
 <button class="primary" type="submit">Update Password</button>
 </form>
 </div>
@@ -75,7 +75,7 @@ input:focus{border-color:#087b43}
 </div>
 <div class="card">
 <div class="actions">
-<div class="action" data-open="fund"><div>💳</div><span>Fund Wallet</span></div>
+<div class="action" data-open="fund"><div>💳</div><span>Fund</span></div>
 <div class="action" data-open="transfer"><div>↗️</div><span>Transfer</span></div>
 <div class="action" data-open="airtime"><div>📱</div><span>Airtime</span></div>
 <div class="action" data-open="data"><div>🌐</div><span>Data</span></div>
@@ -90,10 +90,11 @@ input:focus{border-color:#087b43}
 <div class="card"><b>Recent Transactions</b><div id="txList" style="margin-top:12px"><small id="txEmpty" style="color:#718078">No transactions yet</small></div></div>
 </div>
 </div>
+<div id="phoneModal" class="modal"><div class="modal-box"><b>Complete your profile</b><p style="font-size:13px;color:#666">We need your phone number to create your 9PAY account number</p><div class="field" style="margin-top:14px"><label>Phone (080...)</label><input id="missingPhone" type="tel" placeholder="080xxxxxxxxxx"></div><button id="savePhoneBtn" class="primary">Save & Continue</button></div></div>
 <div id="fundModal" class="modal"><div class="modal-box"><b>Fund Wallet</b><div class="field" style="margin-top:14px"><label>Amount (₦)</label><input id="fundAmount" type="number" min="100" placeholder="1000"></div><button id="fundBtn" class="primary">Pay with Paystack</button><button class="primary" style="background:#eee;color:#333;margin-top:8px" onclick="this.closest('.modal').classList.remove('open')">Cancel</button></div></div>
 <div id="transferModal" class="modal"><div class="modal-box"><b>Transfer</b><div class="field" style="margin-top:14px"><label>To Account No</label><input id="transferTo" placeholder="8012345678"></div><div class="field"><label>Amount</label><input id="transferAmount" type="number"></div><button id="transferBtn" class="primary">Send Money</button><button class="primary" style="background:#eee;color:#333;margin-top:8px" onclick="this.closest('.modal').classList.remove('open')">Cancel</button></div></div>
 <div id="airtimeModal" class="modal"><div class="modal-box"><b>Buy Airtime</b><div class="field" style="margin-top:14px"><label>Network</label><select id="airtimeNetwork"><option>MTN</option><option>GLO</option><option>AIRTEL</option><option>9MOBILE</option></select></div><div class="field"><label>Phone</label><input id="airtimePhone" placeholder="080..."></div><div class="field"><label>Amount</label><input id="airtimeAmount" type="number"></div><button id="airtimeBtn" class="primary">Buy Airtime</button><button class="primary" style="background:#eee;color:#333;margin-top:8px" onclick="this.closest('.modal').classList.remove('open')">Cancel</button></div></div>
-<div id="dataModal" class="modal"><div class="modal-box"><b>Buy Data</b><div class="field" style="margin-top:14px"><label>Network</label><select id="dataNetwork"><option>MTN</option><option>GLO</option><option>AIRTEL</option><option>9MOBILE</option></select></div><div class="field"><label>Phone</label><input id="dataPhone"></div><div class="field"><label>Plan</label><select id="dataPlan"><option>500MB - ₦300</option><option>1GB - ₦500</option><option>2GB - ₦1000</option><option>5GB - ₦2500</option></select></div><button id="dataBtn" class="primary">Buy Data</button><button class="primary" style="background:#eee;color:#333;margin-top:8px" onclick="this.closest('.modal').classList.remove('open')">Cancel</button></div></div>
+<div id="dataModal" class="modal"><div class="modal-box"><b>Buy Data</b><div class="field" style="margin-top:14px"><label>Network</label><select id="dataNetwork"><option>MTN</option><option>GLO</option><option>AIRTEL</option><option>9MOBILE</option></select></div><div class="field"><label>Phone</label><input id="dataPhone"></div><div class="field"><label>Plan</label><select id="dataPlan"><option>500MB - ₦300</option><option>1GB - ₦500</option></select></div><button id="dataBtn" class="primary">Buy Data</button><button class="primary" style="background:#eee;color:#333;margin-top:8px" onclick="this.closest('.modal').classList.remove('open')">Cancel</button></div></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://js.paystack.co/v1/inline.js"></script>
 <script>
@@ -108,6 +109,7 @@ function toAccountNumber(phone){
   if(!phone) return "";
   let p=String(phone).trim().replace(/\s+/g,"");
   if(p.startsWith("0")) p=p.substring(1);
+  if(p.startsWith("+234")) p=p.replace("+234","").replace(/^0/,"");
   return p;
 }
 function getClient(){
@@ -131,11 +133,28 @@ function showMode(mode){
 function showDashboard(){
  $("authCard").classList.add("hidden"); $("dashboard").classList.remove("hidden"); $("logoutBtn").classList.remove("hidden");
  let phone = user.user_metadata && user.user_metadata.phone ? user.user_metadata.phone : "";
+ if(!phone){
+   $("phoneModal").classList.add("open");
+   $("accountDisplay").textContent = "Set phone number";
+   $("emailDisplay").textContent = user.email;
+   return;
+ }
  let acct = toAccountNumber(phone);
- if(!acct){ $("accountDisplay").textContent = "No phone - Contact support"; }
- else { $("accountDisplay").textContent = acct; }
- $("emailDisplay").textContent = user.email + (phone ? " • "+phone : "");
+ $("accountDisplay").textContent = acct;
+ $("emailDisplay").textContent = user.email + " • " + phone;
 }
+$("savePhoneBtn").onclick=async()=>{
+  let p=$("missingPhone").value.trim();
+  if(!p || p.length<10) return showMsg("Enter valid phone 080...","error");
+  try{
+    const {data,error}=await getClient().auth.updateUser({data:{phone:p}});
+    if(error) throw error;
+    user=data.user;
+    $("phoneModal").classList.remove("open");
+    showDashboard();
+    showMsg("Phone saved! Your account number is "+toAccountNumber(p),"success");
+  }catch(e){ showMsg(e.message,"error"); }
+};
 async function runForm(form,action){ const btn=form.querySelector('[type="submit"]'); const orig=btn.textContent; btn.disabled=true; btn.textContent="Please wait..."; clearMsg(); try{ await action(); }catch(e){ let t=e.message||""; if(/invalid login/i.test(t)) t="Incorrect email or password"; showMsg(t,"error"); } finally{ btn.disabled=false; btn.textContent=orig; } }
 $("loginTab").onclick=()=>showMode("login");
 $("signupTab").onclick=()=>showMode("signup");
@@ -147,18 +166,29 @@ $("signupForm").onsubmit=e=>{ e.preventDefault(); runForm($("signupForm"), async
  const api=getClient();
  const {data,error}=await api.auth.signUp({ email, password:pw, options:{ emailRedirectTo: location.origin+location.pathname, data:{ full_name:fullName, phone:phone } } });
  if(error) throw error;
- if(data.session){ user=data.user; showDashboard(); showMsg("Account created! Your Account No is "+toAccountNumber(phone),"success"); } else { showMode("login"); showMsg("Check your email for confirmation link. Your Account No will be "+toAccountNumber(phone),"success"); }
+ if(data.session){ user=data.user; showDashboard(); showMsg("Account created! Account No: "+toAccountNumber(phone),"success"); } else { showMode("login"); showMsg("Check email for confirmation. Account No will be "+toAccountNumber(phone),"success"); }
 }); };
 $("loginForm").onsubmit=e=>{ e.preventDefault(); runForm($("loginForm"), async()=>{
  const api=getClient(); const {data,error}=await api.auth.signInWithPassword({ email:$("loginEmail").value.trim(), password:$("loginPassword").value }); if(error) throw error; user=data.user; showDashboard(); showMsg("Logged in","success");
 }); };
 $("recoveryForm").onsubmit=e=>{ e.preventDefault(); runForm($("recoveryForm"), async()=>{
- const api=getClient(); const {error}=await api.auth.resetPasswordForEmail($("recoveryEmail").value.trim(), { redirectTo: location.origin+location.pathname }); if(error) throw error; showMsg("If email is registered, a reset link will be sent. Check inbox & spam.","success");
+ const api=getClient(); const {error}=await api.auth.resetPasswordForEmail($("recoveryEmail").value.trim(), { redirectTo: location.origin+location.pathname }); if(error) throw error; showMsg("Reset link sent if email exists","success");
 }); };
 $("newPasswordForm").onsubmit=e=>{ e.preventDefault(); runForm($("newPasswordForm"), async()=>{
  if($("newPassword").value!==$("newPasswordConfirm").value) throw new Error("Passwords do not match");
  if(!recoveryReady) throw new Error("Open reset link from email first");
- const {error}=await getClient().auth.updateUser({ password:$("newPassword").value }); if(error) throw error; recoveryReady=false; showMode("login"); showMsg("Password updated, login now","success");
+ const {error}=await getClient().auth.updateUser({ password:$("newPassword").value }); if(error) throw error; recoveryReady=false; showMode("login"); showMsg("Password updated","success");
 }); };
 $("logoutBtn").onclick=async()=>{ await getClient().auth.signOut(); $("dashboard").classList.add("hidden"); $("authCard").classList.remove("hidden"); showMode("login"); showMsg("Logged out","success"); };
-document.querySelectorAll("
+document.querySelectorAll("[data-open]").forEach(el=>el.onclick=()=>{ const id=el.dataset.open+"Modal"; if($(id)) $(id).classList.add("open"); else showMsg(el.dataset.open+" coming soon","success"); });
+document.querySelectorAll(".modal").forEach(m=>m.onclick=e=>{ if(e.target===m) m.classList.remove("open"); });
+function addTx(title,amt,ref){ const d=document.createElement("div"); d.style.cssText="display:flex;justify-content:space-between;padding:10px;border:1px solid #e1ebe4;border-radius:10px;margin-bottom:8px"; d.innerHTML=`<div><b style="font-size:13px">${title}</b><br><small style="color:#718078">${ref}</small></div><b>₦${amt}</b>`; $("txList").prepend(d); $("txEmpty").style.display="none"; }
+$("fundBtn").onclick=()=>{ const a=parseFloat($("fundAmount").value); if(!a||a<100) return showMsg("Min ₦100","error"); PaystackPop.setup({key:PAYSTACK_KEY,email:user.email,amount:a*100,ref:"9PAY-"+Date.now(),callback:function(r){ balance+=a; $("balanceDisplay").textContent="₦"+balance.toLocaleString()+".00"; addTx("Fund Wallet","+"+a,r.reference); document.getElementById("fundModal").classList.remove("open"); showMsg("Funded ₦"+a,"success")},onClose:()=>showMsg("Payment cancelled","error")}).openIframe(); };
+$("transferBtn").onclick=()=>{ const a=parseFloat($("transferAmount").value); if(!a) return showMsg("Enter amount","error"); if(a>balance) return showMsg("Insufficient balance","error"); balance-=a; $("balanceDisplay").textContent="₦"+balance.toLocaleString()+".00"; addTx("Transfer to "+$("transferTo").value,"-"+a,"TRF-"+Date.now()); document.getElementById("transferModal").classList.remove("open"); showMsg("Transfer successful","success"); };
+$("airtimeBtn").onclick=()=>{ const a=parseFloat($("airtimeAmount").value); if(!a) return showMsg("Enter amount","error"); if(a>balance) return showMsg("Fund wallet first","error"); balance-=a; $("balanceDisplay").textContent="₦"+balance.toLocaleString()+".00"; addTx($("airtimeNetwork").value+" Airtime","-"+a,$("airtimePhone").value); document.getElementById("airtimeModal").classList.remove("open"); showMsg("Airtime sent","success"); };
+$("dataBtn").onclick=()=>{ const a=500; if(a>balance) return showMsg("Fund wallet first","error"); balance-=a; $("balanceDisplay").textContent="₦"+balance.toLocaleString()+".00"; addTx($("dataNetwork").value+" Data","-"+a,$("dataPhone").value); document.getElementById("dataModal").classList.remove("open"); showMsg("Data bought","success"); };
+try{ getClient().auth.getSession().then(({data})=>{ if(data.session){ user=data.session.user; showDashboard(); } }); }catch(e){}
+})();
+</script>
+</body>
+                                                                                       </html>
