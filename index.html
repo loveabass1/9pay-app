@@ -5,444 +5,201 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#087b43">
 <title>9PAY - Digital Wallet</title>
-
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#f3f8f4;color:#183426;font-family:Arial,sans-serif}
-header{padding:20px 6%;background:white;border-bottom:1px solid #e1ebe4}
-.logo{font-size:30px;font-weight:900;color:#087b43}
+header{padding:18px 5%;background:white;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e1ebe4;position:sticky;top:0;z-index:10}
+.logo{font-size:26px;font-weight:900;color:#087b43}
 .logo span{color:#183426}
-.hero{background:linear-gradient(135deg,#087b43,#034e2b);color:white;text-align:center;padding:40px 20px 75px}
-.hero h1{margin:0 0 12px;font-size:35px}
-.hero p{line-height:1.7;margin:auto;max-width:400px}
-.container{max-width:460px;width:92%;margin:-42px auto 35px;position:relative}
-.card{background:white;padding:25px 22px;border-radius:18px;box-shadow:0 10px 30px #17332614}
-.tabs{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:5px;background:#f0f5f1;border-radius:10px;margin-bottom:25px}
-.tab{border:0;padding:13px 5px;border-radius:8px;background:transparent;color:#718078;font-weight:bold}
-.tab.active{background:white;color:#087b43;box-shadow:0 2px 8px #0000000d}
-h2{font-size:23px;margin:0 0 8px}
-.subtitle{font-size:14px;line-height:1.6;color:#718078;margin:0 0 22px}
-.field{margin-bottom:17px}
-label{display:block;font-size:13px;font-weight:bold;margin-bottom:8px}
-input{width:100%;padding:14px;border:1px solid #d8e4dc;border-radius:10px;font-size:15px;outline:none}
-input:focus{border-color:#087b43}
-.primary{width:100%;padding:15px;border:0;border-radius:10px;background:#087b43;color:white;font-size:15px;font-weight:bold;cursor:pointer}
+.container{max-width:480px;width:94%;margin:20px auto}
+.card{background:white;padding:22px;border-radius:18px;box-shadow:0 10px 30px #17332612;margin-bottom:16px}
+h2{margin:0 0 6px;font-size:22px}
+.subtitle{font-size:13px;color:#718078;margin-bottom:18px;line-height:1.5}
+.field{margin-bottom:14px}
+label{display:block;font-size:12px;font-weight:bold;margin-bottom:6px}
+input,select{width:100%;padding:13px;border:1px solid #d8e4dc;border-radius:10px;font-size:14px;outline:none}
+input:focus,select:focus{border-color:#087b43}
+.primary{width:100%;padding:14px;border:0;border-radius:10px;background:#087b43;color:white;font-weight:bold;cursor:pointer}
 .primary:disabled{opacity:.6}
-.text-button{display:block;margin:17px auto 0;border:0;background:transparent;color:#087b43;font-weight:bold;cursor:pointer;padding:8px}
-.message{display:none;padding:12px;border-radius:9px;font-size:13px;line-height:1.6;margin-bottom:17px;overflow-wrap:anywhere}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:5px;background:#f0f5f1;border-radius:10px;margin-bottom:20px}
+.tab{border:0;padding:12px;border-radius:8px;background:transparent;color:#718078;font-weight:bold}
+.tab.active{background:white;color:#087b43;box-shadow:0 2px 8px #0001}
+.message{padding:12px;border-radius:9px;font-size:13px;margin-bottom:14px;display:none}
 .message.success{display:block;background:#e9f7ef;color:#086638}
 .message.error{display:block;background:#fff0ef;color:#b42318}
 .hidden{display:none!important}
-.account-box,.balance-box{padding:18px;border-radius:12px;margin:18px 0;background:#e9f7ef;text-align:left}
-.account-number{display:block;font-size:23px;font-weight:bold;margin:10px 0;overflow-wrap:anywhere}
-.balance-box{background:white;border:1px solid #e1ebe4;text-align:center}
-.balance{font-size:28px;font-weight:bold;margin:10px 0}
-.notice{font-size:12px;color:#718078;line-height:1.7;text-align:center;margin-top:22px}
-footer{text-align:center;padding:0 20px 25px;font-size:12px;color:#718078}
+.balance-card{background:linear-gradient(135deg,#087b43,#034e2b);color:white;padding:22px;border-radius:18px;margin-bottom:16px}
+.balance-card small{opacity:.8}
+.balance-card .bal{font-size:32px;font-weight:900;margin:8px 0}
+.balance-card .acct{font-size:13px;background:#ffffff20;padding:6px 10px;border-radius:20px;display:inline-block}
+.actions{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
+.action{border:1px solid #e1ebe4;background:white;border-radius:14px;padding:14px 6px;text-align:center;cursor:pointer}
+.action span{display:block;font-size:11px;font-weight:bold;margin-top:6px}
+.action i{font-size:20px}
+.service-list{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.service{border:1px solid #e1ebe4;padding:16px;border-radius:12px;background:#f9fbf9;cursor:pointer;text-align:left}
+.service b{display:block;font-size:14px}
+.service small{color:#718078;font-size:11px}
+.modal{position:fixed;inset:0;background:#00000070;display:none;align-items:flex-end;z-index:20}
+.modal.open{display:flex}
+.modal-box{background:white;width:100%;max-width:480px;margin:0 auto;border-radius:20px 20px 0 0;padding:22px;max-height:85vh;overflow:auto}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.close{border:0;background:#f0f5f1;width:32px;height:32px;border-radius:50%;cursor:pointer}
+footer{text-align:center;padding:20px;font-size:11px;color:#718078}
 </style>
 </head>
-
 <body>
-<header><div class="logo">9<span>PAY</span></div></header>
+<header><div class="logo">9<span>PAY</span></div><button id="logoutBtn" class="hidden" style="border:0;background:#f0f5f1;padding:8px 12px;border-radius:8px;font-weight:bold">Logout</button></header>
 
-<section class="hero">
-<h1>Welcome to 9PAY</h1>
-<p>Your digital wallet experience. Create an account and get started.</p>
-</section>
+<div class="container">
+<div id="message" class="message"></div>
 
-<main class="container">
-<section class="card">
-
-<div id="tabs" class="tabs">
-<button type="button" id="loginTab" class="tab active">Log In</button>
-<button type="button" id="signupTab" class="tab">Create Account</button>
-</div>
-
-<div id="message" class="message" role="status" aria-live="polite"></div>
-
+<!-- AUTH -->
+<div id="authCard" class="card">
+<div class="tabs"><button id="loginTab" class="tab active">Log In</button><button id="signupTab" class="tab">Sign Up</button></div>
 <form id="loginForm">
-<h2>Welcome back</h2>
-<p class="subtitle">Log in to your 9PAY account.</p>
-<div class="field">
-<label for="loginEmail">Email address</label>
-<input id="loginEmail" type="email" autocomplete="email" required placeholder="you@example.com">
-</div>
-<div class="field">
-<label for="loginPassword">Password</label>
-<input id="loginPassword" type="password" autocomplete="current-password" required placeholder="Enter your password">
-</div>
+<h2>Welcome back</h2><p class="subtitle">Login to your 9PAY wallet</p>
+<div class="field"><label>Email</label><input id="loginEmail" type="email" required></div>
+<div class="field"><label>Password</label><input id="loginPassword" type="password" required></div>
 <button class="primary" type="submit">Log In</button>
-<button class="text-button" id="forgotButton" type="button">Forgot your password?</button>
 </form>
-
 <form id="signupForm" class="hidden">
-<h2>Create your account</h2>
-<p class="subtitle">Join 9PAY in a few simple steps.</p>
-<div class="field">
-<label for="fullName">Full name</label>
-<input id="fullName" autocomplete="name" required placeholder="Enter your full name">
-</div>
-<div class="field">
-<label for="phone">Phone number</label>
-<input id="phone" type="tel" autocomplete="tel" required placeholder="08012345678">
-</div>
-<div class="field">
-<label for="signupEmail">Email address</label>
-<input id="signupEmail" type="email" autocomplete="email" required placeholder="you@example.com">
-</div>
-<div class="field">
-<label for="signupPassword">Create password</label>
-<input id="signupPassword" type="password" autocomplete="new-password" minlength="8" required placeholder="At least 8 characters">
-</div>
-<div class="field">
-<label for="confirmPassword">Confirm password</label>
-<input id="confirmPassword" type="password" autocomplete="new-password" minlength="8" required placeholder="Enter password again">
-</div>
+<h2>Create account</h2><p class="subtitle">Get your 9PAY wallet in seconds</p>
+<div class="field"><label>Full name</label><input id="fullName" required></div>
+<div class="field"><label>Phone</label><input id="phone" type="tel" required></div>
+<div class="field"><label>Email</label><input id="signupEmail" type="email" required></div>
+<div class="field"><label>Password</label><input id="signupPassword" type="password" minlength="8" required></div>
 <button class="primary" type="submit">Create Account</button>
 </form>
-
-<form id="recoveryForm" class="hidden">
-<h2>Reset password</h2>
-<p class="subtitle">Enter your email address to request a password-reset link.</p>
-<div class="field">
-<label for="recoveryEmail">Email address</label>
-<input id="recoveryEmail" type="email" autocomplete="email" required placeholder="you@example.com">
 </div>
-<button class="primary" type="submit">Send Recovery Link</button>
-<button class="text-button backButton" type="button">Back to Log In</button>
-</form>
 
-<form id="newPasswordForm" class="hidden">
-<h2>Choose a new password</h2>
-<p class="subtitle">Enter your new password below.</p>
-<div class="field">
-<label for="newPassword">New password</label>
-<input id="newPassword" type="password" minlength="8" autocomplete="new-password" required>
+<!-- DASHBOARD -->
+<div id="dashboard" class="hidden">
+<div class="balance-card">
+<small>Wallet Balance</small>
+<div class="bal" id="balanceDisplay">₦0.00</div>
+<div class="acct" id="accountDisplay">ID: 5526228204 • Not assigned</div>
 </div>
-<div class="field">
-<label for="newPasswordConfirm">Confirm new password</label>
-<input id="newPasswordConfirm" type="password" minlength="8" autocomplete="new-password" required>
+
+<div class="card">
+<h2 style="font-size:16px;margin-bottom:12px">Quick Actions</h2>
+<div class="actions">
+<div class="action" data-open="fund"><i>💳</i><span>Fund Wallet</span></div>
+<div class="action" data-open="transfer"><i>↗️</i><span>Transfer</span></div>
+<div class="action" data-open="airtime"><i>📱</i><span>Airtime</span></div>
+<div class="action" data-open="data"><i>🌐</i><span>Data</span></div>
 </div>
-<button class="primary" type="submit">Update Password</button>
-</form>
-
-<section id="dashboard" class="hidden">
-<h2 id="welcomeName">Welcome to 9PAY</h2>
-<p id="userEmail" class="subtitle"></p>
-<div class="account-box">
-<small>Your 9PAY account number</small>
-<strong id="accountNumber" class="account-number">Not yet assigned</strong>
-<small id="accountNote">Account-number generation is not yet enabled.</small>
+<h2 style="font-size:16px;margin:18px 0 12px">Services</h2>
+<div class="service-list">
+<div class="service" data-open="electricity"><b>⚡ Electricity</b><small>PHCN, EKEDC, IKEDC</small></div>
+<div class="service" data-open="cable"><b>📺 Cable TV</b><small>DSTV, GOTV, Startimes</small></div>
+<div class="service" data-open="betting"><b>🎮 Betting</b><small>Bet9ja, Sportybet</small></div>
+<div class="service" data-open="education"><b>🎓 Education</b><small>WAEC, JAMB, School fees</small></div>
 </div>
-<div class="balance-box">
-<small>Wallet balance</small>
-<div class="balance">₦0.00</div>
-<small>Wallet transactions are not yet enabled.</small>
 </div>
-<button id="logoutButton" class="primary" type="button">Log Out</button>
-</section>
 
-<p class="notice">9PAY registration is separate from bank account registration. Real deposits, withdrawals and transfers require additional secure setup and payment-provider integration.</p>
-</section>
-</main>
+<div class="card">
+<h2 style="font-size:16px">Recent Transactions</h2>
+<p class="subtitle" id="txEmpty">No transactions yet. Fund your wallet to start.</p>
+<div id="txList"></div>
+</div>
+</div>
+</div>
 
-<footer>© <span id="year"></span> 9PAY. All rights reserved.</footer>
+<!-- MODALS -->
+<div id="fundModal" class="modal"><div class="modal-box">
+<div class="modal-head"><b>Fund Wallet</b><button class="close" data-close>✕</button></div>
+<div class="field"><label>Amount (₦)</label><input id="fundAmount" type="number" min="100" placeholder="1000"></div>
+<button id="fundBtn" class="primary">Pay with Paystack</button>
+<small style="display:block;text-align:center;margin-top:10px;color:#718078">Merchant ID: 5526228204 - Secured by Paystack</small>
+</div></div>
 
-<!-- Load Supabase separately from the interface controls. -->
+<div id="transferModal" class="modal"><div class="modal-box">
+<div class="modal-head"><b>Transfer</b><button class="close" data-close>✕</button></div>
+<div class="field"><label>9PAY Account / Phone</label><input id="transferTo" placeholder="Enter account number"></div>
+<div class="field"><label>Amount</label><input id="transferAmount" type="number" placeholder="500"></div>
+<div class="field"><label>Note</label><input id="transferNote" placeholder="Optional"></div>
+<button id="transferBtn" class="primary">Send Money</button>
+</div></div>
+
+<div id="airtimeModal" class="modal"><div class="modal-box">
+<div class="modal-head"><b>Buy Airtime</b><button class="close" data-close>✕</button></div>
+<div class="field"><label>Network</label><select id="airtimeNetwork"><option>MTN</option><option>GLO</option><option>AIRTEL</option><option>9MOBILE</option></select></div>
+<div class="field"><label>Phone Number</label><input id="airtimePhone" placeholder="080..."></div>
+<div class="field"><label>Amount</label><input id="airtimeAmount" type="number" placeholder="500"></div>
+<button id="airtimeBtn" class="primary">Buy Airtime</button>
+</div></div>
+
+<div id="dataModal" class="modal"><div class="modal-box">
+<div class="modal-head"><b>Buy Data</b><button class="close" data-close>✕</button></div>
+<div class="field"><label>Network</label><select id="dataNetwork"><option>MTN</option><option>GLO</option><option>AIRTEL</option><option>9MOBILE</option></select></div>
+<div class="field"><label>Phone Number</label><input id="dataPhone" placeholder="080..."></div>
+<div class="field"><label>Data Plan</label><select id="dataPlan"><option>500MB - ₦300</option><option>1GB - ₦500</option><option>2GB - ₦1000</option><option>5GB - ₦2500</option><option>10GB - ₦4000</option></select></div>
+<button id="dataBtn" class="primary">Buy Data</button>
+</div></div>
+
+<div id="electricityModal" class="modal"><div class="modal-box">
+<div class="modal-head"><b>Electricity Bill</b><button class="close" data-close>✕</button></div>
+<div class="field"><label>Disco</label><select><option>IKEDC</option><option>EKEDC</option><option>AEDC</option><option>KEDCO</option></select></div>
+<div class="field"><label>Meter Number</label><input placeholder="Enter meter number"></div>
+<div class="field"><label>Amount</label><input type="number" placeholder="2000"></div>
+<button class="primary" onclick="alert('Electricity payment coming soon - connect to VTU provider')">Pay Bill</button>
+</div></div>
+
+<div id="cableModal" class="modal"><div class="modal-box">
+<div class="modal-head"><b>Cable TV</b><button class="close" data-close>✕</button></div>
+<div class="field"><label>Provider</label><select><option>DSTV</option><option>GOTV</option><option>Startimes</option></select></div>
+<div class="field"><label>Smart Card / IUC Number</label><input placeholder="Enter IUC"></div>
+<button class="primary" onclick="alert('Cable subscription coming soon')">Subscribe</button>
+</div></div>
+
+<div id="bettingModal" class="modal"><div class="modal-box">
+<div class="modal-head"><b>Betting Wallet</b><button class="close" data-close>✕</button></div>
+<div class="field"><label>Platform</label><select><option>Bet9ja</option><option>SportyBet</option><option>1xBet</option><option>BetKing</option></select></div>
+<div class="field"><label>User ID</label><input placeholder="Enter betting ID"></div>
+<div class="field"><label>Amount</label><input type="number" placeholder="1000"></div>
+<button class="primary" onclick="alert('Betting funding coming soon')">Fund Betting Wallet</button>
+</div></div>
+
+<div id="educationModal" class="modal"><div class="modal-box">
+<div class="modal-head"><b>Education</b><button class="close" data-close>✕</button></div>
+<div class="field"><label>Service</label><select><option>WAEC Result Checker</option><option>JAMB e-PIN</option><option>School Fees</option></select></div>
+<button class="primary" onclick="alert('Education payments coming soon')">Continue</button>
+</div></div>
+
+<footer>© 2026 9PAY • Merchant ID 5526228204</footer>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+<script src="https://js.paystack.co/v1/inline.js"></script>
 <script>
-(function () {
-  "use strict";
+const PAYSTACK_KEY = "pk_test_af62b13850281e5c92f23934c7378f8334bb5169";
+const MERCHANT_ID = "5526228204";
+const $ = id => document.getElementById(id);
+const msg = $("message");
+let client, user, balance = 0;
 
-  const $ = id => document.getElementById(id);
+function showMsg(t,m){msg.textContent=t;msg.className="message "+m;msg.style.display="block";setTimeout(()=>msg.style.display="none",4000);}
+const supa = window.supabase.createClient("https://stbcjnblpierdjpdcvoa.supabase.co","sb_publishable_XS_N_wc6SNqxrV_ZrO-9gg_GBvPIbDE",{auth:{persistSession:true}});
 
-  const forms = {
-    login: $("loginForm"),
-    signup: $("signupForm"),
-    recovery: $("recoveryForm"),
-    newPassword: $("newPasswordForm")
-  };
+async function init(){
+  const {data} = await supa.auth.getSession();
+  if(data.session){user=data.session.user;showDashboard();}
+}
+init();
 
-  const message = $("message");
-  const tabs = $("tabs");
-  const dashboard = $("dashboard");
+supa.auth.onAuthStateChange((e,s)=>{if(s?.user){user=s.user;showDashboard();} else {showAuth();}});
 
-  let client = null;
-  let recoverySessionReady = false;
+function showDashboard(){
+  $("authCard").classList.add("hidden");
+  $("dashboard").classList.remove("hidden");
+  $("logoutBtn").classList.remove("hidden");
+  $("accountDisplay").textContent = "ID: "+MERCHANT_ID+" • "+(user.email||"");
+}
+function showAuth(){
+  $("authCard").classList.remove("hidden");
+  $("dashboard").classList.add("hidden");
+  $("logoutBtn").classList.add("hidden");
+}
 
-  $("year").textContent = new Date().getFullYear();
-
-  function showMessage(text, type) {
-    message.textContent = text;
-    message.className = "message " + (type || "success");
-  }
-
-  function clearMessage() {
-    message.textContent = "";
-    message.className = "message";
-  }
-
-  function showMode(mode) {
-    clearMessage();
-
-    Object.keys(forms).forEach(key => {
-      forms[key].classList.toggle("hidden", key !== mode);
-    });
-
-    dashboard.classList.add("hidden");
-    tabs.classList.toggle("hidden", mode === "recovery" || mode === "newPassword");
-
-    $("loginTab").classList.toggle("active", mode === "login");
-    $("signupTab").classList.toggle("active", mode === "signup");
-  }
-
-  function getClient() {
-    if (client) return client;
-
-    if (!window.supabase || !window.supabase.createClient) {
-      throw new Error("The secure connection library did not load. Check your internet connection and refresh the page.");
-    }
-
-    client = window.supabase.createClient(
-      "https://stbcjnblpierdjpdcvoa.supabase.co",
-      "sb_publishable_XS_N_wc6SNqxrV_ZrO-9gg_GBvPIbDE",
-      {
-        auth: {
-          persistSession: true,
-          autoRefreshToken: true,
-          detectSessionInUrl: true
-        }
-      }
-    );
-
-    client.auth.onAuthStateChange((event, session) => {
-      if (event === "PASSWORD_RECOVERY") {
-        recoverySessionReady = true;
-        showMode("newPassword");
-        showMessage("Enter your new password.", "success");
-      } else if (event === "SIGNED_OUT") {
-        dashboard.classList.add("hidden");
-        showMode("login");
-      } else if (event === "INITIAL_SESSION" && session) {
-        displayDashboard(session.user);
-      }
-    });
-
-    return client;
-  }
-
-  function friendlyError(error) {
-    const text = String(error && error.message || "");
-
-    if (/invalid login credentials/i.test(text)) {
-      return "Incorrect email or password. Please check your details.";
-    }
-
-    if (/email not confirmed/i.test(text)) {
-      return "Please confirm your email using the link sent to your inbox.";
-    }
-
-    if (/user already registered/i.test(text)) {
-      return "This email already has an account. Please log in.";
-    }
-
-    return text || "Something went wrong. Please try again.";
-  }
-
-  async function runForm(form, action) {
-    const button = form.querySelector('[type="submit"]');
-    const original = button.textContent;
-
-    button.disabled = true;
-    button.textContent = "Please wait...";
-    clearMessage();
-
-    try {
-      await action();
-    } catch (error) {
-      showMessage(friendlyError(error), "error");
-    } finally {
-      button.disabled = false;
-      button.textContent = original;
-    }
-  }
-
-  $("loginTab").addEventListener("click", () => showMode("login"));
-  $("signupTab").addEventListener("click", () => showMode("signup"));
-
-  $("forgotButton").addEventListener("click", () => {
-    $("recoveryEmail").value = $("loginEmail").value.trim();
-    showMode("recovery");
-  });
-
-  document.querySelectorAll(".backButton").forEach(button => {
-    button.addEventListener("click", () => showMode("login"));
-  });
-
-  forms.signup.addEventListener("submit", event => {
-    event.preventDefault();
-
-    runForm(forms.signup, async () => {
-      const fullName = $("fullName").value.trim();
-      const phone = $("phone").value.trim();
-      const email = $("signupEmail").value.trim();
-      const password = $("signupPassword").value;
-
-      if (password !== $("confirmPassword").value) {
-        throw new Error("The passwords do not match.");
-      }
-
-      if (password.length < 8) {
-        throw new Error("Your password must contain at least 8 characters.");
-      }
-
-      const api = getClient();
-
-      const { data, error } = await api.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: location.origin + location.pathname,
-          data: {
-            full_name: fullName,
-            phone: phone
-          }
-        }
-      });
-
-      if (error) throw error;
-
-      if (data.session) {
-        await displayDashboard(data.user);
-        showMessage("Your account has been created.", "success");
-      } else {
-        showMode("login");
-        showMessage("Registration submitted. Check your email for the confirmation link before logging in.", "success");
-      }
-    });
-  });
-
-  forms.login.addEventListener("submit", event => {
-    event.preventDefault();
-
-    runForm(forms.login, async () => {
-      const api = getClient();
-
-      const { data, error } = await api.auth.signInWithPassword({
-        email: $("loginEmail").value.trim(),
-        password: $("loginPassword").value
-      });
-
-      if (error) throw error;
-
-      await displayDashboard(data.user);
-      showMessage("You have successfully logged in.", "success");
-    });
-  });
-
-  forms.recovery.addEventListener("submit", event => {
-    event.preventDefault();
-
-    runForm(forms.recovery, async () => {
-      const api = getClient();
-
-      const { error } = await api.auth.resetPasswordForEmail(
-        $("recoveryEmail").value.trim(),
-        {
-          redirectTo: location.origin + location.pathname
-        }
-      );
-
-      if (error) throw error;
-
-      showMessage("If this email is registered, a password-reset link will be sent. Check your inbox and spam folder.", "success");
-    });
-  });
-
-  forms.newPassword.addEventListener("submit", event => {
-    event.preventDefault();
-
-    runForm(forms.newPassword, async () => {
-      if ($("newPassword").value !== $("newPasswordConfirm").value) {
-        throw new Error("The passwords do not match.");
-      }
-
-      if (!recoverySessionReady) {
-        throw new Error("Open the password-reset link from your email first.");
-      }
-
-      const { error } = await getClient().auth.updateUser({
-        password: $("newPassword").value
-      });
-
-      if (error) throw error;
-
-      recoverySessionReady = false;
-      showMode("login");
-      showMessage("Password updated successfully. You can now log in.", "success");
-    });
-  });
-
-  async function displayDashboard(user) {
-    Object.values(forms).forEach(form => form.classList.add("hidden"));
-    tabs.classList.add("hidden");
-    dashboard.classList.remove("hidden");
-
-    $("welcomeName").textContent =
-      user.user_metadata && user.user_metadata.full_name || "Welcome to 9PAY";
-
-    $("userEmail").textContent = user.email || "";
-    $("accountNumber").textContent = "Not yet assigned";
-    $("accountNote").textContent = "Automatic account-number generation is not yet enabled.";
-
-    try {
-      const { data, error } = await getClient()
-        .from("profiles")
-        .select("full_name, account_number")
-        .eq("id", user.id)
-        .maybeSingle();
-
-      if (!error && data) {
-        if (data.full_name) $("welcomeName").textContent = data.full_name;
-
-        if (data.account_number) {
-          $("accountNumber").textContent = data.account_number;
-          $("accountNote").textContent = "Your internal 9PAY account number.";
-        }
-      }
-    } catch (error) {
-      console.log("Profile information is not available yet.");
-    }
-  }
-
-  $("logoutButton").addEventListener("click", async () => {
-    try {
-      const { error } = await getClient().auth.signOut();
-      if (error) throw error;
-      dashboard.classList.add("hidden");
-      showMode("login");
-      showMessage("You have logged out.", "success");
-    } catch (error) {
-      showMessage(friendlyError(error), "error");
-    }
-  });
-
-  // Attempt to restore a previous login without blocking the buttons.
-  try {
-    const api = getClient();
-    api.auth.getSession().then(({ data, error }) => {
-      if (error) {
-        console.error(error);
-        return;
-      }
-      if (data.session) displayDashboard(data.session.user);
-    }).catch(error => console.error(error));
-  } catch (error) {
-    console.warn("Supabase is not available yet. The form buttons will still work.");
-  }
-})();
-</script>
-
-</body>
-  </html>
+$("loginTab").onclick=()=>{ $("loginForm").classList.remove("hidden"); $("signupForm").classList.add("hidden"); $("loginTab").classList.add("active"); $("signupTab").classList.remove("active"); }
+$("signupTab").onclick=()=>{ $("signup
